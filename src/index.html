@@ -1,0 +1,646 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Paragraph Formatter - Interactive Tool</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background-color: #f5f5f5;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 20px;
+            background: white;
+            padding: 12px 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .header h1 {
+            font-size: 20px;
+            margin-bottom: 6px;
+        }
+
+        .header p {
+            font-size: 13px;
+            margin-bottom: 6px;
+        }
+
+        .header .attribution {
+            font-size: 11px;
+            color: #666;
+            margin-top: 4px;
+        }
+
+        .header .attribution a {
+            color: #007bff;
+            text-decoration: none;
+        }
+
+        .header .attribution a:hover {
+            text-decoration: underline;
+        }
+
+        .main-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            height: calc(100vh - 200px);
+            min-height: 600px;
+        }
+
+        .left-panel {
+            display: flex;
+            flex-direction: column;
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            min-height: 100%;
+            overflow-y: auto;
+            overflow-x: hidden;
+        }
+
+        .left-panel::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        .left-panel::-webkit-scrollbar-track {
+            background: #f1f1f1;
+            border-radius: 4px;
+        }
+
+        .left-panel::-webkit-scrollbar-thumb {
+            background: #888;
+            border-radius: 4px;
+        }
+
+        .left-panel::-webkit-scrollbar-thumb:hover {
+            background: #555;
+        }
+
+        .controls {
+            margin-bottom: 10px;
+            flex-shrink: 0;
+        }
+
+        .controls-container {
+            max-height: 2000px;
+            transition: max-height 0.3s ease-out, opacity 0.2s ease-out;
+            overflow: hidden;
+            opacity: 1;
+        }
+
+        .controls.collapsed .controls-container {
+            max-height: 0;
+            opacity: 0;
+        }
+
+        .section-title {
+            cursor: pointer;
+            user-select: none;
+            position: relative;
+            padding: 4px 25px 4px 12px;
+            transition: background-color 0.2s;
+            font-size: 16px;
+            font-weight: 600;
+            margin-bottom: 8px;
+            color: #333;
+            border-bottom: 2px solid #007bff;
+        }
+
+        .section-title:hover {
+            background-color: #f8f9fa;
+            border-radius: 4px;
+        }
+
+        .section-title::after {
+            content: '▼';
+            font-size: 10px;
+            position: absolute;
+            right: 12px;
+            top: 50%;
+            transform: translateY(-50%);
+            transition: transform 0.2s;
+            color: #999;
+        }
+
+        .controls.collapsed .section-title::after {
+            transform: translateY(-50%) rotate(-90deg);
+        }
+
+        .controls-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 8px;
+        }
+
+        .label-with-tooltip {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .tooltip-icon {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 16px;
+            height: 16px;
+            border-radius: 50%;
+            background: #007bff;
+            color: white;
+            font-size: 11px;
+            font-weight: bold;
+            cursor: help;
+            position: relative;
+            flex-shrink: 0;
+            z-index: 1;
+        }
+
+        .tooltip-icon:hover {
+            background: #0056b3;
+            z-index: 10000;
+        }
+
+        .tooltip {
+            visibility: hidden;
+            opacity: 0;
+            position: fixed;
+            background-color: #333;
+            color: white;
+            text-align: left;
+            padding: 8px 12px;
+            border-radius: 6px;
+            font-size: 12px;
+            line-height: 1.4;
+            white-space: normal;
+            width: 200px;
+            z-index: 10000;
+            transition: opacity 0.2s, visibility 0.2s;
+            pointer-events: none;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+        }
+
+        .tooltip::after {
+            content: "";
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%);
+            border: 5px solid transparent;
+            border-top-color: #333;
+            top: 100%;
+        }
+
+        .tooltip.tooltip-below::after {
+            top: -10px;
+            border-top-color: transparent;
+            border-bottom-color: #333;
+        }
+
+        .tooltip-icon:hover .tooltip {
+            visibility: visible;
+            opacity: 1;
+        }
+
+        /* Ensure tooltips are not clipped by parent containers */
+        .form-group {
+            position: relative;
+        }
+
+        .output {
+            display: flex;
+            flex-direction: column;
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            min-height: 100%;
+        }
+
+        /* Tab Styles for Output */
+        .tab-navigation {
+            display: flex;
+            margin-bottom: 15px;
+            border-bottom: 2px solid #e9ecef;
+        }
+
+        .tab-btn {
+            background: none;
+            border: none;
+            padding: 10px 20px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 500;
+            color: #666;
+            border-bottom: 2px solid transparent;
+            transition: all 0.2s;
+            flex: 1;
+        }
+
+        .tab-btn:hover {
+            color: #007bff;
+            background-color: #f8f9fa;
+        }
+
+        .tab-btn.active {
+            color: #007bff;
+            border-bottom-color: #007bff;
+            background-color: #f8f9fa;
+        }
+
+        .tab-content {
+            position: relative;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            min-height: 0;
+        }
+
+        .tab-panel {
+            display: none;
+            flex: 1;
+            min-height: 0;
+        }
+
+        .tab-panel.active {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .no-formatting-text {
+            white-space: normal;
+            line-height: 1.6;
+            font-size: 16px;
+            flex: 1;
+            overflow-y: auto;
+            border: 1px solid #eee;
+            padding: 15px;
+            border-radius: 4px;
+            background: #fafafa;
+            min-height: 0;
+        }
+
+        .form-group {
+            margin-bottom: 0;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 3px;
+            font-weight: 600;
+            color: #555;
+            font-size: 13px;
+        }
+
+        .form-group input[type="range"] {
+            width: 100%;
+            margin-bottom: 3px;
+        }
+
+        .form-group input[type="number"] {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 14px;
+        }
+
+        .form-group input[type="file"] {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            background: white;
+        }
+
+        .range-value {
+            font-size: 11px;
+            color: #666;
+            text-align: center;
+            margin-bottom: 0;
+        }
+
+        .button-group {
+            display: flex;
+            justify-content: center;
+            margin-top: 6px;
+        }
+
+        button {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+            background: #007bff;
+            color: white;
+            font-size: 14px;
+            cursor: pointer;
+            transition: background-color 0.2s;
+        }
+
+        button:hover {
+            background: #0056b3;
+        }
+
+        .output-text {
+            white-space: pre-wrap;
+            line-height: 1.8;
+            font-size: 16px;
+            flex: 1;
+            overflow-y: auto;
+            border: 1px solid #eee;
+            padding: 15px;
+            border-radius: 4px;
+            background: #fafafa;
+            min-height: 0;
+        }
+
+        .output-textarea {
+            width: 100%;
+            flex: 1;
+            line-height: 1.8;
+            font-size: 16px;
+            overflow-y: auto;
+            border: 1px solid #eee;
+            padding: 15px;
+            border-radius: 4px;
+            background: #fafafa;
+            font-family: inherit;
+            resize: none;
+            min-height: 0;
+        }
+
+        .stats {
+            margin-top: 15px;
+            padding: 10px;
+            background: #e9ecef;
+            border-radius: 4px;
+            font-size: 14px;
+        }
+
+        .copy-btn {
+            background: #007bff;
+            color: white;
+            border: none;
+            padding: 6px 12px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 13px;
+            font-weight: 500;
+            transition: background-color 0.2s;
+            white-space: nowrap;
+        }
+
+        .copy-btn:hover {
+            background: #0056b3;
+        }
+
+        .copy-btn:active {
+            background: #004085;
+        }
+
+        .copy-btn.copied {
+            background: #28a745;
+        }
+
+        .tab-panel-header {
+            display: flex;
+            justify-content: flex-end;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+
+
+        .error {
+            color: #dc3545;
+            background: #f8d7da;
+            border: 1px solid #f5c6cb;
+            padding: 10px;
+            border-radius: 4px;
+            margin-bottom: 15px;
+        }
+
+        .form-group select {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 14px;
+            background: white;
+        }
+
+        @media (max-width: 1024px) {
+            .main-content {
+                grid-template-columns: 1fr;
+                height: auto;
+            }
+            
+            .controls-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>📝 Paragraph Formatter</h1>
+            <p>Create aesthetically pleasing paragraph breaks with natural variability</p>
+            <div class="attribution">
+                Created by <a href="https://www.linkedin.com/in/danilomoraes/" target="_blank" rel="noopener noreferrer">Danilo S. Morães</a>. Issues or comments at <a href="mailto:greendhulke@gmail.com">greendhulke@gmail.com</a>
+            </div>
+        </div>
+
+        <div class="main-content">
+            <div class="left-panel">
+                <div class="controls">
+                    <h2 class="section-title" id="configTitle">Configuration</h2>
+                    
+                    <div class="controls-container">
+                        <div class="controls-grid">
+                            <div class="form-group">
+                                <label for="fileInput" class="label-with-tooltip">
+                                    Select Text File:
+                                    <span class="tooltip-icon">
+                                        ?
+                                        <span class="tooltip">Upload a text file (.txt or .md) to format. The file content will be loaded into the Original Text area.</span>
+                                    </span>
+                                </label>
+                                <input type="file" id="fileInput" accept=".txt,.md" />
+                            </div>
+
+                            <div class="form-group">
+                                <label for="eventSelector" class="label-with-tooltip">
+                                    Or Select Pre-loaded Text:
+                                    <span class="tooltip-icon">
+                                        ?
+                                        <span class="tooltip">Choose from a pre-loaded example text to quickly test the formatter with sample content.</span>
+                                    </span>
+                                </label>
+                                <select id="eventSelector">
+                                    <option value="">Choose an event...</option>
+                                    <option value="event1">Event 1</option>
+                                    <option value="event2">Event 2</option>
+                                    <option value="event3">Event 3</option>
+                                    <option value="event4">Event 4</option>
+                                    <option value="event5">Event 5</option>
+                                    <option value="event6">Event 6</option>
+                                    <option value="event7">Event 7</option>
+                                    <option value="event8">Event 8</option>
+                                    <option value="event9">Event 9</option>
+                                </select>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="minSentences" class="label-with-tooltip">
+                                    Min Sentences per Paragraph:
+                                    <span class="tooltip-icon">
+                                        ?
+                                        <span class="tooltip">The minimum number of sentences that will be grouped together in a single paragraph. Lower values create shorter paragraphs.</span>
+                                    </span>
+                                </label>
+                                <input type="range" id="minSentences" min="2" max="10" value="2" />
+                                <div class="range-value" id="minSentencesValue">2</div>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="maxSentences" class="label-with-tooltip">
+                                    Max Sentences per Paragraph:
+                                    <span class="tooltip-icon">
+                                        ?
+                                        <span class="tooltip">The maximum number of sentences that will be grouped together in a single paragraph. Higher values create longer paragraphs.</span>
+                                    </span>
+                                </label>
+                                <input type="range" id="maxSentences" min="2" max="10" value="5" />
+                                <div class="range-value" id="maxSentencesValue">5</div>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="minWords" class="label-with-tooltip">
+                                    Min Words per Paragraph:
+                                    <span class="tooltip-icon">
+                                        ?
+                                        <span class="tooltip">The minimum number of words that should be in each paragraph. This works alongside sentence count to determine paragraph breaks.</span>
+                                    </span>
+                                </label>
+                                <input type="range" id="minWords" min="30" max="200" value="80" />
+                                <div class="range-value" id="minWordsValue">80</div>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="maxWords" class="label-with-tooltip">
+                                    Max Words per Paragraph:
+                                    <span class="tooltip-icon">
+                                        ?
+                                        <span class="tooltip">The maximum number of words that should be in each paragraph. Paragraphs will break when this limit is approached.</span>
+                                    </span>
+                                </label>
+                                <input type="range" id="maxWords" min="30" max="200" value="120" />
+                                <div class="range-value" id="maxWordsValue">120</div>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="sentenceVariation" class="label-with-tooltip">
+                                    Sentence Variation (±):
+                                    <span class="tooltip-icon">
+                                        ?
+                                        <span class="tooltip">Adds natural variability to the number of sentences per paragraph. Higher values create more variation in paragraph lengths for a more organic feel.</span>
+                                    </span>
+                                </label>
+                                <input type="range" id="sentenceVariation" min="1" max="10" step="1" value="4" />
+                                <div class="range-value" id="sentenceVariationValue">4</div>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="wordVariation" class="label-with-tooltip">
+                                    Word Variation (±):
+                                    <span class="tooltip-icon">
+                                        ?
+                                        <span class="tooltip">Adds natural variability to the number of words per paragraph. Higher values create more variation in paragraph sizes for a more natural appearance.</span>
+                                    </span>
+                                </label>
+                                <input type="range" id="wordVariation" min="0" max="30" step="1" value="10" />
+                                <div class="range-value" id="wordVariationValue">10</div>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="lineBreaks" class="label-with-tooltip">
+                                    Line Breaks Between Paragraphs:
+                                    <span class="tooltip-icon">
+                                        ?
+                                        <span class="tooltip">Controls the number of line breaks between paragraphs. 0 = single line break (no empty line), 1 = double line break (one empty line), etc.</span>
+                                    </span>
+                                </label>
+                                <input type="range" id="lineBreaks" min="0" max="5" step="1" value="1" />
+                                <div class="range-value" id="lineBreaksValue">1</div>
+                            </div>
+                        </div>
+
+                        <div class="button-group">
+                            <button id="resetBtn">Reset to Defaults</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group" style="flex: 1; display: flex; flex-direction: column; min-height: 300px;">
+                    <label for="originalText" class="label-with-tooltip" style="margin-bottom: 10px; font-weight: 600; color: #555;">
+                        Original Text
+                        <span class="tooltip-icon">
+                            ?
+                            <span class="tooltip">As you type or modify the text in this area, the formatted output will automatically update in real-time. You can also paste text here or load it from a file.</span>
+                        </span>
+                    </label>
+                    <textarea id="originalText" class="output-textarea" placeholder="Enter or paste your text here..."></textarea>
+                </div>
+            </div>
+
+            <div class="output">
+                <!-- Tab Navigation -->
+                <div class="tab-navigation">
+                    <button class="tab-btn active" data-tab="formatted">Formatted Output</button>
+                    <button class="tab-btn" data-tab="noFormatting">No Formatting</button>
+                </div>
+                
+                <div id="errorMessage" class="error" style="display: none;"></div>
+                
+                <!-- Tab Content -->
+                <div class="tab-content">
+                    <div id="formattedTab" class="tab-panel active">
+                        <div class="tab-panel-header">
+                            <button id="copyFormattedBtn" class="copy-btn">Copy</button>
+                        </div>
+                        <div id="outputText" class="output-text">Select a text file or enter text to begin formatting...</div>
+                        <div id="stats" class="stats" style="display: none;">
+                            <span id="statsContent"></span>
+                        </div>
+                    </div>
+                    
+                    <div id="noFormattingTab" class="tab-panel">
+                        <div class="tab-panel-header">
+                            <button id="copyNoFormattingBtn" class="copy-btn">Copy</button>
+                        </div>
+                        <div id="noFormattingText" class="no-formatting-text">Select a text file or enter text to see unformatted output...</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
