@@ -62,7 +62,6 @@ const rangeInputs = [
   { input: 'minWords', display: 'minWordsValue' },
   { input: 'maxWords', display: 'maxWordsValue' },
   { input: 'sentenceVariation', display: 'sentenceVariationValue' },
-  { input: 'wordVariation', display: 'wordVariationValue' },
   { input: 'lineBreaks', display: 'lineBreaksValue' }
 ];
 
@@ -309,7 +308,6 @@ function resetToDefaults(): void {
   const minWordsEl = document.getElementById('minWords') as HTMLInputElement;
   const maxWordsEl = document.getElementById('maxWords') as HTMLInputElement;
   const sentenceVariationEl = document.getElementById('sentenceVariation') as HTMLInputElement;
-  const wordVariationEl = document.getElementById('wordVariation') as HTMLInputElement;
   const lineBreaksEl = document.getElementById('lineBreaks') as HTMLInputElement;
   
   if (minSentencesEl) minSentencesEl.value = config.minSentences.toString();
@@ -317,7 +315,6 @@ function resetToDefaults(): void {
   if (minWordsEl) minWordsEl.value = config.minWords.toString();
   if (maxWordsEl) maxWordsEl.value = config.maxWords.toString();
   if (sentenceVariationEl) sentenceVariationEl.value = config.sentenceVariation.toString();
-  if (wordVariationEl) wordVariationEl.value = config.wordVariation.toString();
   if (lineBreaksEl) lineBreaksEl.value = config.lineBreaks.toString();
   
   // Update display values
@@ -326,7 +323,6 @@ function resetToDefaults(): void {
   document.getElementById('minWordsValue')!.textContent = config.minWords.toString();
   document.getElementById('maxWordsValue')!.textContent = config.maxWords.toString();
   document.getElementById('sentenceVariationValue')!.textContent = config.sentenceVariation.toString();
-  document.getElementById('wordVariationValue')!.textContent = config.wordVariation.toString();
   document.getElementById('lineBreaksValue')!.textContent = config.lineBreaks.toString();
   
   // Reformat text if we have text loaded
