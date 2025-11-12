@@ -39,6 +39,14 @@ module.exports = {
         {
           from: 'resources/favicon.ico',
           to: 'favicon.ico'
+        },
+        {
+          from: 'resources/sitemap.xml',
+          to: 'sitemap.xml'
+        },
+        {
+          from: 'resources/robots.txt',
+          to: 'robots.txt'
         }
       ]
     })
