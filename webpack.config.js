@@ -1,6 +1,7 @@
 const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const HtmlInlineScriptPlugin = require('html-inline-script-webpack-plugin');
+const CopyWebpackPlugin = require('copy-webpack-plugin');
 
 module.exports = {
   entry: './src/main.ts',
@@ -32,7 +33,15 @@ module.exports = {
       filename: 'index.html',
       inject: 'body'
     }),
-    new HtmlInlineScriptPlugin()
+    new HtmlInlineScriptPlugin(),
+    new CopyWebpackPlugin({
+      patterns: [
+        {
+          from: 'resources/favicon.ico',
+          to: 'favicon.ico'
+        }
+      ]
+    })
   ],
   devServer: {
     static: {
