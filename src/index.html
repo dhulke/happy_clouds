@@ -633,9 +633,9 @@
 
         <main class="main-content" role="main">
             <section class="left-panel" aria-label="Text input and configuration">
+                <!-- Text Selection Section -->
                 <div class="controls">
-                    <h2 class="section-title" id="configTitle">Configuration Settings</h2>
-                    
+                    <h2 class="section-title">Text Selection</h2>
                     <div class="controls-container">
                         <div class="controls-grid">
                             <div class="form-group">
@@ -670,7 +670,26 @@
                                     <option value="event9">Event 9</option>
                                 </select>
                             </div>
+                        </div>
+                    </div>
+                </div>
 
+                <div class="form-group" style="flex: 1; display: flex; flex-direction: column; min-height: 300px;">
+                    <label for="originalText" class="label-with-tooltip" style="margin-bottom: 10px; font-weight: 600; color: #555;">
+                        Original Text - Paste Your Wall of Text Here
+                        <span class="tooltip-icon">
+                            ?
+                            <span class="tooltip">As you type or modify the text in this area, the formatted output will automatically update in real-time. You can also paste text here or load it from a file.</span>
+                        </span>
+                    </label>
+                    <textarea id="originalText" class="output-textarea" placeholder="Enter or paste your wall of text here to format it into paragraphs..." aria-label="Text input area for formatting text into paragraphs"></textarea>
+                </div>
+
+                <!-- Advanced Settings Section -->
+                <div class="controls collapsed">
+                    <h2 class="section-title" id="advancedSettingsTitle">Advanced Settings</h2>
+                    <div class="controls-container">
+                        <div class="controls-grid">
                             <div class="form-group">
                                 <label for="minSentences" class="label-with-tooltip">
                                     Min Sentences per Paragraph:
@@ -679,7 +698,7 @@
                                         <span class="tooltip">The minimum number of sentences that will be grouped together in a single paragraph. Lower values create shorter paragraphs.</span>
                                     </span>
                                 </label>
-                                <input type="range" id="minSentences" min="2" max="10" value="2" />
+                                <input type="range" id="minSentences" min="1" max="10" value="2" />
                                 <div class="range-value" id="minSentencesValue">2</div>
                             </div>
 
@@ -732,6 +751,18 @@
                             </div>
 
                             <div class="form-group">
+                                <label for="wordVariation" class="label-with-tooltip">
+                                    Word Variation (±):
+                                    <span class="tooltip-icon">
+                                        ?
+                                        <span class="tooltip">Adds natural variability to the number of words per paragraph. Higher values create more variation in paragraph lengths for a more organic feel.</span>
+                                    </span>
+                                </label>
+                                <input type="range" id="wordVariation" min="0" max="30" step="1" value="10" />
+                                <div class="range-value" id="wordVariationValue">10</div>
+                            </div>
+
+                            <div class="form-group">
                                 <label for="lineBreaks" class="label-with-tooltip">
                                     Line Breaks Between Paragraphs:
                                     <span class="tooltip-icon">
@@ -748,17 +779,6 @@
                             <button id="resetBtn">Reset to Defaults</button>
                         </div>
                     </div>
-                </div>
-
-                <div class="form-group" style="flex: 1; display: flex; flex-direction: column; min-height: 300px;">
-                    <label for="originalText" class="label-with-tooltip" style="margin-bottom: 10px; font-weight: 600; color: #555;">
-                        Original Text - Paste Your Wall of Text Here
-                        <span class="tooltip-icon">
-                            ?
-                            <span class="tooltip">As you type or modify the text in this area, the formatted output will automatically update in real-time. You can also paste text here or load it from a file.</span>
-                        </span>
-                    </label>
-                    <textarea id="originalText" class="output-textarea" placeholder="Enter or paste your wall of text here to format it into paragraphs..." aria-label="Text input area for formatting text into paragraphs"></textarea>
                 </div>
             </section>
 
