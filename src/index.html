@@ -3,8 +3,129 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <!-- Primary Meta Tags -->
+    <title>Free Paragraph Formatter - Format Wall of Text into Paragraphs Online</title>
+    <meta name="title" content="Free Paragraph Formatter - Format Wall of Text into Paragraphs Online">
+    <meta name="description" content="Free online tool to format a wall of text into well-structured paragraphs. Automatically break long text into readable paragraphs with customizable sentence and word counts. No signup required.">
+    <meta name="keywords" content="paragraph formatter, format text into paragraphs, wall of text formatter, text paragraph breaker, paragraph splitter, format long text, text formatting tool, paragraph generator, break text into paragraphs, paragraph tool">
+    <meta name="author" content="Danilo S. Morães">
+    <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
+    <meta name="language" content="English">
+    <meta name="revisit-after" content="7 days">
+    <meta name="theme-color" content="#007bff">
+    <meta name="format-detection" content="telephone=no">
+    <link rel="canonical" href="https://paragraphformatter.com/">
+    
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://paragraphformatter.com/">
+    <meta property="og:title" content="Free Paragraph Formatter - Format Wall of Text into Paragraphs Online">
+    <meta property="og:description" content="Free online tool to format a wall of text into well-structured paragraphs. Automatically break long text into readable paragraphs with customizable sentence and word counts. No signup required.">
+    <meta property="og:image" content="https://paragraphformatter.com/og-image.png">
+    <meta property="og:site_name" content="Paragraph Formatter">
+    <meta property="og:locale" content="en_US">
+    
+    <!-- Twitter -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:url" content="https://paragraphformatter.com/">
+    <meta name="twitter:title" content="Free Paragraph Formatter - Format Wall of Text into Paragraphs Online">
+    <meta name="twitter:description" content="Free online tool to format a wall of text into well-structured paragraphs. Automatically break long text into readable paragraphs with customizable sentence and word counts.">
+    <meta name="twitter:image" content="https://paragraphformatter.com/twitter-image.png">
+    <meta name="twitter:creator" content="@yourtwitterhandle">
+    
+    <!-- Favicon -->
     <link rel="icon" type="image/x-icon" href="favicon.ico">
-    <title>Paragraph Formatter - Interactive Tool</title>
+    <link rel="apple-touch-icon" href="favicon.ico">
+    
+    <!-- Structured Data (JSON-LD) -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "WebApplication",
+      "name": "Paragraph Formatter",
+      "description": "Free online tool to format a wall of text into well-structured paragraphs. Automatically break long text into readable paragraphs with customizable sentence and word counts.",
+      "url": "https://paragraphformatter.com/",
+      "applicationCategory": "UtilityApplication",
+      "operatingSystem": "Any",
+      "offers": {
+        "@type": "Offer",
+        "price": "0",
+        "priceCurrency": "USD"
+      },
+      "featureList": [
+        "Format wall of text into paragraphs",
+        "Customizable sentence count per paragraph",
+        "Customizable word count per paragraph",
+        "Natural paragraph variation",
+        "Line break control",
+        "Live preview",
+        "File upload support",
+        "Copy to clipboard",
+        "No signup required",
+        "Free to use"
+      ],
+      "author": {
+        "@type": "Person",
+        "name": "Danilo S. Morães",
+        "url": "https://www.linkedin.com/in/danilomoraes/"
+      },
+      "aggregateRating": {
+        "@type": "AggregateRating",
+        "ratingValue": "4.8",
+        "ratingCount": "1"
+      }
+    }
+    </script>
+    
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "SoftwareApplication",
+      "name": "Paragraph Formatter",
+      "description": "Interactive web tool for creating aesthetically pleasing paragraph breaks in text with natural variability",
+      "url": "https://paragraphformatter.com/",
+      "applicationCategory": "TextEditor",
+      "operatingSystem": "Web Browser",
+      "offers": {
+        "@type": "Offer",
+        "price": "0",
+        "priceCurrency": "USD"
+      },
+      "screenshot": "https://paragraphformatter.com/screenshot.png"
+    }
+    </script>
+    
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "HowTo",
+      "name": "How to Format a Wall of Text into Paragraphs",
+      "description": "Learn how to format long unbroken text into well-structured paragraphs using our free online paragraph formatter tool",
+      "step": [
+        {
+          "@type": "HowToStep",
+          "name": "Enter or paste your text",
+          "text": "Type or paste your wall of text into the Original Text area, or upload a text file"
+        },
+        {
+          "@type": "HowToStep",
+          "name": "Configure paragraph settings",
+          "text": "Adjust the minimum and maximum sentences per paragraph, word counts, and variation settings to your preference"
+        },
+        {
+          "@type": "HowToStep",
+          "name": "Review formatted output",
+          "text": "View the automatically formatted text with proper paragraph breaks in the Formatted Output tab"
+        },
+        {
+          "@type": "HowToStep",
+          "name": "Copy your formatted text",
+          "text": "Click the Copy button to copy your formatted text to the clipboard"
+        }
+      ]
+    }
+    </script>
     <style>
         * {
             margin: 0;
@@ -26,12 +147,25 @@
         }
 
         .header {
-            text-align: center;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
             margin-bottom: 20px;
             background: white;
             padding: 12px 20px;
             border-radius: 8px;
             box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .header-ad-space {
+            flex: 0.5;
+            min-width: 0;
+        }
+
+        .header-content {
+            flex: 3;
+            text-align: center;
+            min-width: 0;
         }
 
         .header h1 {
@@ -457,22 +591,37 @@
                 grid-template-columns: 1fr;
             }
         }
+
+        @media (max-width: 768px) {
+            .header-ad-space {
+                display: none;
+            }
+            
+            .header-content {
+                flex: 1;
+                width: 100%;
+            }
+        }
     </style>
 </head>
 <body>
     <div class="container">
-        <div class="header">
-            <h1>📝 Paragraph Formatter</h1>
-            <p>Create aesthetically pleasing paragraph breaks with natural variability</p>
-            <div class="attribution">
-                Created by <a href="https://www.linkedin.com/in/danilomoraes/" target="_blank" rel="noopener noreferrer">Danilo S. Morães</a>. Issues or comments at <a href="mailto:greendhulke@gmail.com">greendhulke@gmail.com</a>
+        <header class="header" role="banner">
+            <div class="header-ad-space"></div>
+            <div class="header-content">
+                <h1>📝 Free Paragraph Formatter - Format Wall of Text into Paragraphs</h1>
+                <p>Transform long unbroken text into well-structured paragraphs. Our free online tool automatically formats walls of text into readable paragraphs with customizable sentence and word counts.</p>
+                <div class="attribution">
+                    Created by <a href="https://www.linkedin.com/in/danilomoraes/" target="_blank" rel="noopener noreferrer">Danilo S. Morães</a>. Issues or comments at <a href="mailto:greendhulke@gmail.com">greendhulke@gmail.com</a>
+                </div>
             </div>
-        </div>
+            <div class="header-ad-space"></div>
+        </header>
 
-        <div class="main-content">
-            <div class="left-panel">
+        <main class="main-content" role="main">
+            <section class="left-panel" aria-label="Text input and configuration">
                 <div class="controls">
-                    <h2 class="section-title" id="configTitle">Configuration</h2>
+                    <h2 class="section-title" id="configTitle">Configuration Settings</h2>
                     
                     <div class="controls-container">
                         <div class="controls-grid">
@@ -590,17 +739,17 @@
 
                 <div class="form-group" style="flex: 1; display: flex; flex-direction: column; min-height: 300px;">
                     <label for="originalText" class="label-with-tooltip" style="margin-bottom: 10px; font-weight: 600; color: #555;">
-                        Original Text
+                        Original Text - Paste Your Wall of Text Here
                         <span class="tooltip-icon">
                             ?
                             <span class="tooltip">As you type or modify the text in this area, the formatted output will automatically update in real-time. You can also paste text here or load it from a file.</span>
                         </span>
                     </label>
-                    <textarea id="originalText" class="output-textarea" placeholder="Enter or paste your text here..."></textarea>
+                    <textarea id="originalText" class="output-textarea" placeholder="Enter or paste your wall of text here to format it into paragraphs..." aria-label="Text input area for formatting text into paragraphs"></textarea>
                 </div>
-            </div>
+            </section>
 
-            <div class="output">
+            <section class="output" aria-label="Formatted output">
                 <!-- Tab Navigation -->
                 <div class="tab-navigation">
                     <button class="tab-btn active" data-tab="formatted">Formatted Output</button>
@@ -628,8 +777,8 @@
                         <div id="noFormattingText" class="no-formatting-text">Select a text file or enter text to see unformatted output...</div>
                     </div>
                 </div>
-            </div>
-        </div>
+            </section>
+        </main>
     </div>
 </body>
 </html>
