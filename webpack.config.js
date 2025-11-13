@@ -33,6 +33,11 @@ module.exports = {
       filename: 'index.html',
       inject: 'body'
     }),
+    new HtmlWebpackPlugin({
+      template: './src/privacy-policy.html',
+      filename: 'privacy-policy.html',
+      inject: false
+    }),
     new HtmlInlineScriptPlugin(),
     new CopyWebpackPlugin({
       patterns: [
