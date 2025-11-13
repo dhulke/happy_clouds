@@ -15,6 +15,12 @@
     Content-Type = "text/plain; charset=utf-8"
     Cache-Control = "public, max-age=3600"
 
+# ads.txt redirect
+[[redirects]]
+  from = "/ads.txt"
+  to = "https://srv.adstxtmanager.com/19390/paragraphformatter.com"
+  status = 200
+
 # SPA fallback - redirect all other routes to index.html
 # Note: sitemap.xml and robots.txt will be served directly if they exist in dist/
 [[redirects]]
